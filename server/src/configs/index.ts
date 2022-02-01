@@ -1,21 +1,35 @@
+import databaseConfig from './database.json'
+import { Dialect } from 'sequelize'
+
+interface IDatabase {
+  username: string
+  password: string
+  host: string
+  database: string
+  dialect: Dialect
+}
+
 const configs = {
   development: {
     server: {
       host: 'localhost',
       port: 3000
-    }
+    },
+    database: databaseConfig.development as IDatabase
   },
   test: {
     server: {
       host: 'localhost',
       port: 3000
-    }
+    },
+    database: {}
   },
   production: {
     server: {
       host: 'localhost',
       port: 3000
-    }
+    },
+    database: {}
   }
 }
 

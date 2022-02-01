@@ -27,7 +27,8 @@
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
     "koa-ts-controllers": "^2.1.0",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "sequelize-typescript": "^2.1.2"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",

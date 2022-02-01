@@ -4,7 +4,8 @@ import koaRouter from 'koa-router'
 import Koa, { Context } from 'koa'
 import path from 'path'
 import koaBody from 'koa-body'
-import {notFound} from '@hapi/boom'
+import { notFound } from '@hapi/boom'
+import { Sequelize } from 'sequelize-typescript'
 
 interface ErrorBody {
   status: number
@@ -16,6 +17,11 @@ interface ErrorBody {
 ;(async () => {
   const app = new Koa()
   const router = new koaRouter()
+
+  app.context.db = new Sequelize({
+    ...configs.database,
+    models: [__dirname + '/models/**/*']
+  })
 
   await bootstrapControllers(app, {
     router,
