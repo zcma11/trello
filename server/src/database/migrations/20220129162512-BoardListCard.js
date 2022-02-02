@@ -15,7 +15,7 @@ module.exports = {
           references: { model: 'user', key: 'id' },
           allowNull: false
         },
-        boardList: {
+        boardListId: {
           type: Sequelize.INTEGER,
           references: { model: 'boardList', key: 'id' },
           allowNull: false

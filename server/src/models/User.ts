@@ -13,9 +13,9 @@ import {
 import crypto from 'crypto'
 
 @Table({
-  tableName: 'user'
+  tableName: 'User'
 })
-class User extends Model<User> {
+export class User extends Model<User> {
   @PrimaryKey
   @AutoIncrement
   @Column
