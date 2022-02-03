@@ -38,7 +38,7 @@ interface ErrorBody {
       }
       if (err.output) {
         status = err.output.statusCode
-        ctx.body = err.output.payload
+        body = err.output.payload
         if (err.data) {
           body.errorDetails = err.data
         }
