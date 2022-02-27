@@ -15,6 +15,9 @@ const configs = {
       host: 'localhost',
       port: 3000
     },
+    jwt: {
+      privateKey: 'key'
+    },
     database: databaseConfig.development as IDatabase
   },
   test: {
@@ -22,12 +25,18 @@ const configs = {
       host: 'localhost',
       port: 3000
     },
+    jwt: {
+      privateKey: 'key'
+    },
     database: {}
   },
   production: {
     server: {
       host: 'localhost',
       port: 3000
+    },
+    jwt: {
+      privateKey: 'key'
     },
     database: {}
   }

@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Ctx,
+  Flow,
   Get,
   Header,
   Params,
@@ -9,6 +11,8 @@ import {
 } from 'koa-ts-controllers'
 import { IsNumberString } from 'class-validator'
 import { Boom, notFound } from '@hapi/boom'
+import { Context } from 'koa'
+import authorization from '../middlewares/authorization'
 
 class foo {
   @IsNumberString({}, { message: 'cuo la' })
@@ -40,5 +44,17 @@ class Test {
   async bar(@Body() body: { name: string }) {
     console.log(body)
     return `fffffffly`
+  }
+
+  @Get('/auth')
+  @Flow([authorization])
+  async auth(@Ctx() ctx: Context) {
+    return ctx.userInfo
+  }
+
+  @Get('/noauth')
+  async noauth() {
+    console.log('不鉴权')
+    return {}
   }
 }

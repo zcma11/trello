@@ -1,11 +1,12 @@
 import configs from './configs'
 import { bootstrapControllers } from 'koa-ts-controllers'
 import koaRouter from 'koa-router'
-import Koa, { Context } from 'koa'
+import Koa, { Context, Next } from 'koa'
 import path from 'path'
 import koaBody from 'koa-body'
 import { notFound } from '@hapi/boom'
 import { Sequelize } from 'sequelize-typescript'
+import jsonwebtoken from 'jsonwebtoken'
 
 interface ErrorBody {
   status: number
@@ -21,6 +22,14 @@ interface ErrorBody {
   app.context.db = new Sequelize({
     ...configs.database,
     models: [__dirname + '/models/**/*']
+  })
+
+  app.use(async (ctx, next: Next) => {
+    const token = ctx.header['authorization']
+    if (token) {
+      ctx.userInfo = jsonwebtoken.verify(token, configs.jwt.privateKey)
+    }
+    await next()
   })
 
   await bootstrapControllers(app, {

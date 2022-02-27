@@ -1,7 +1,7 @@
-import {  IsNotEmpty, Length } from 'class-validator'
+import { IsNotEmpty, Length } from 'class-validator'
 import { IsSameValue } from './CustomValidator'
 
-export class RegisterBody {
+class UserBody {
   @Length(1, 25, {
     message: '名字长度不能大于25个字符'
   })
@@ -14,9 +14,13 @@ export class RegisterBody {
     message: '密码不能为空'
   })
   password: string
+}
 
+export class RegisterBody extends UserBody {
   @IsSameValue('password', {
     message: '两次输入不一致'
   })
   rePassword: string
 }
+
+export class LoginBody extends UserBody {}

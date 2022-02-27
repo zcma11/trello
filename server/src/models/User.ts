@@ -26,8 +26,9 @@ export class User extends Model<User> {
   @Column({
     type: DataType.STRING(20)
   })
-  username: string
+  name: string
 
+  @Column
   set password(val: string) {
     const md5 = crypto.createHash('md5')
     const pwd = md5.update(val).digest('hex')
