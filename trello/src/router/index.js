@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -16,12 +17,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/board/:id(\\d+)',
     name: 'Board',
     component: Board,
+    meta: {
+      requireAuth: true
+    },
     children: [
       {
         path: 'list/:listId(\\d+)/card/:cardId(\\d+)',
@@ -51,6 +58,15 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // matched 已匹配的路由
+  const needAuth = to.matched.some(route => route.meta.requireAuth)
+  console.log(needAuth, store.state.user.info)
+  if (needAuth && !store.state.user.info) {
+    next({ name: 'Login' })
+  } else next()
 })
 
 export default router

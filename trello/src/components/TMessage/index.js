@@ -20,7 +20,6 @@ function Message(option = {}) {
   let offset = vm.offset
   vm.offset += vms.reduce((a, b) => a + b.$el.offsetHeight + offset, 0)
   vms.push(vm)
-  console.log(vm.offset)
 
   vm.onClose = Message.close.bind(vm, vm, offset)
 }

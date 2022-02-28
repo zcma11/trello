@@ -46,10 +46,13 @@ export class UserController {
       }
     })
 
+    if (!user) {
+      throw conflict('登录失败', '用户不存在')
+    }
     let md5 = crypto.createHash('md5')
     password = md5.update(password).digest('hex') 
     if (user?.password !== password) {
-      throw conflict('登录失败', '用户不存在或密码错误')
+      throw conflict('登录失败', '密码错误')
     }
 
     const userInfo = {
@@ -60,8 +63,6 @@ export class UserController {
     const token = jsonwebtoken.sign(userInfo, configs.jwt.privateKey)
     
     ctx.set('authorization', token)
-    return {
-      msg: 'success'
-    }
+    return userInfo
   }
 }
