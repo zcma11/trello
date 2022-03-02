@@ -60,6 +60,7 @@ const router = new VueRouter({
   routes
 })
 
+store.commit('user/initUserInfo')
 router.beforeEach((to, from, next) => {
   // matched 已匹配的路由
   const needAuth = to.matched.some(route => route.meta.requireAuth)

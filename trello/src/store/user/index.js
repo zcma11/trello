@@ -15,6 +15,10 @@ export default {
     updateInfo: (state, data) => {
       state.info = data
       localStorage.setItem('user', JSON.stringify(data))
+    },
+    removeInfo: state => {
+      state.info = null
+      localStorage.removeItem('user')
     }
   },
   actions: {
@@ -31,6 +35,9 @@ export default {
           token: response.headers.authorization
         })
       }
+    },
+    logout: ({ commit }) => {
+      commit('removeInfo')
     }
   }
 }
