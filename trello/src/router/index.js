@@ -64,7 +64,6 @@ store.commit('user/initUserInfo')
 router.beforeEach((to, from, next) => {
   // matched 已匹配的路由
   const needAuth = to.matched.some(route => route.meta.requireAuth)
-  console.log(needAuth, store.state.user.info)
   if (needAuth && !store.state.user.info) {
     next({ name: 'Login' })
   } else next()

@@ -8,19 +8,23 @@
         我的看板
       </h2>
       <ul class="board-items">
-        <li class="board-item">
-          <span class="title">test</span>
-        </li>
-        <li class="board-item">
-          <span class="title">共同努力吧！</span>
-        </li>
-        <li class="board-item">
-          <span class="title">Welcome Board</span>
-        </li>
+        <router-link
+          v-for="board in boards"
+          :key="board.id"
+          custom
+          :to="{ name: 'Board', params: { id: board.id } }"
+          v-slot="{ navigate }"
+        >
+          <li class="board-item" @click="navigate">
+            <span class="title">{{ board.name }}</span>
+          </li>
+        </router-link>
         <li class="board-item create-new-board">
           <textarea
             class="title form-field-input"
             placeholder="创建新看板"
+            v-model="newBoardName"
+            @blur="addBoard"
           ></textarea>
         </li>
       </ul>
@@ -30,10 +34,39 @@
 
 <script>
 import THeader from '@/components/THeader'
+import { mapState } from 'vuex'
+
 export default {
   name: 'Home',
   components: {
     THeader
+  },
+  created() {
+    if (!this.boards) {
+      this.$store.dispatch('board/getAllBoards')
+    }
+  },
+  data() {
+    return {
+      newBoardName: ''
+    }
+  },
+  computed: {
+    ...mapState('board', {
+      boards: state => state.boards
+    })
+  },
+  methods: {
+    addBoard() {
+      if (this.newBoardName.trim() === '') return
+      this.$store.dispatch('board/postBoard', {
+        name: this.newBoardName
+      })
+
+      this.$message.success('创建成功')
+
+      this.newBoardName = ''
+    }
   }
 }
 </script>

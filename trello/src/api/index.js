@@ -3,24 +3,25 @@ import Message from '@/components/TMessage/index.js'
 import store from '@/store'
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 
-axios.interceptors.request.use(config => {
-  const userInfo = store.state.user.info
-  if (userInfo) {
-    config.headers.authorization = userInfo.token
-  }
+axios.interceptors.request.use(
+  config => {
+    const userInfo = store.state.user.info
+    if (userInfo) {
+      config.headers.authorization = userInfo.token
+    }
 
-  return config
-}, error => {
-  console.log(error)
-  return Promise.reject('request error')
-})
+    return config
+  },
+  error => {
+    return Promise.reject('request error')
+  }
+)
 
 axios.interceptors.response.use(
   response => {
     return response
   },
   error => {
-    console.dir(error.response)
     if (error.response?.data) {
       const { message, errorDetails } = error.response.data
       const msg = message + ' : ' + errorDetails
@@ -42,6 +43,21 @@ export const login = async data => {
   return await axios({
     method: 'post',
     url: '/user/login',
+    data
+  })
+}
+
+export const getBoards = async () => {
+  return await axios({
+    method: 'get',
+    url: '/board'
+  })
+}
+
+export const addBoard = async data => {
+  return await axios({
+    method: 'post',
+    url: '/board',
     data
   })
 }
