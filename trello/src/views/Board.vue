@@ -11,7 +11,14 @@
       <!--面板容器-->
       <div class="board">
         <!--面板列表容器-->
-        <t-list v-for="list in lists" :key="list.id" :list="list" />
+        <t-list
+          @dragStart="dragStart"
+          @dragMove="dragMove"
+          @drapEnd="drapEnd"
+          v-for="list in lists"
+          :key="list.id"
+          :list="list"
+        />
 
         <!--无内容列表容器-->
         <div
@@ -111,7 +118,24 @@ export default {
       })
       this.$message.success('创建成功')
       this.cancelAddList()
-    }
+    },
+    dragStart() {},
+    dragMove({ x, y, el }) {
+      const board = el.parentNode
+      const listsEls = [...board.querySelectorAll('.list-wrap')]
+      const dragELIndex = listsEls.findIndex(list => list === el)
+      listsEls.forEach((list, i) => {
+        const pos = list.getBoundingClientRect()
+        if (x < pos.right && x > pos.left && y < pos.bottom && y > pos.top) {
+          if (i > dragELIndex) {
+            board.insertBefore(el, list.nextElementSibling)
+          } else {
+            board.insertBefore(el, list)
+          }
+        }
+      })
+    },
+    dragEnd() {}
   }
 }
 </script>
