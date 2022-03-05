@@ -61,3 +61,26 @@ export const addBoard = async data => {
     data
   })
 }
+
+export const getBoard = async id => {
+  return await axios({
+    url: `/board/${id}`
+  })
+}
+
+export const getLists = async boardId => {
+  return await axios({
+    url: '/list',
+    params: {
+      boardId
+    }
+  })
+}
+
+export const addList = async data => {
+  return await axios({
+    url: '/list',
+    method: 'post',
+    data
+  })
+}

@@ -42,7 +42,7 @@ export default {
     THeader
   },
   created() {
-    if (!this.boards) {
+    if (!this.inited) {
       this.$store.dispatch('board/getAllBoards')
     }
   },
@@ -53,7 +53,8 @@ export default {
   },
   computed: {
     ...mapState('board', {
-      boards: state => state.boards
+      boards: state => state.boards,
+      inited: state => state.inited
     })
   },
   methods: {
