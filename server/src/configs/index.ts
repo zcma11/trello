@@ -1,5 +1,6 @@
 import databaseConfig from './database.json'
 import { Dialect } from 'sequelize'
+import path from 'path'
 
 interface IDatabase {
   username: string
@@ -18,7 +19,11 @@ const configs = {
     jwt: {
       privateKey: 'key'
     },
-    database: databaseConfig.development as IDatabase
+    database: databaseConfig.development as IDatabase,
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
   },
   test: {
     server: {
@@ -28,7 +33,11 @@ const configs = {
     jwt: {
       privateKey: 'key'
     },
-    database: {}
+    database: {},
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
   },
   production: {
     server: {
@@ -38,13 +47,17 @@ const configs = {
     jwt: {
       privateKey: 'key'
     },
-    database: {}
+    database: {},
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
   }
 }
 
 // 取 key
 type configsKey = keyof typeof configs
 
-const NODE_ENV = process.env.NODE_ENV as configsKey || 'development'
+const NODE_ENV = (process.env.NODE_ENV as configsKey) || 'development'
 
 export default configs[NODE_ENV]

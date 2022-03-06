@@ -13,6 +13,7 @@ export class PostAddListBody {
   })
   name: string
 }
+
 export class GetListQuery {
   @IsNumberString({}, {
     message: '面板id不能为空且必须是数字'

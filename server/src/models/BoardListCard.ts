@@ -10,9 +10,12 @@ import {
   CreatedAt,
   UpdatedAt,
   Default,
+  HasMany
 } from 'sequelize-typescript'
 import { BoardList } from './BoardList'
 import { User } from './User'
+import { CardAttachment } from './CardAttachment'
+import { Comment } from './Comment'
 
 @Table({
   tableName: 'BoardListCard'
@@ -56,6 +59,12 @@ export class BoardListCard extends Model {
     type: DataType.FLOAT
   })
   order: number
+
+  @HasMany(() => CardAttachment)
+  attachments: CardAttachment[]
+
+  @HasMany(() => Comment)
+  comments: Comment[]
 
   @CreatedAt
   createdAt: Date

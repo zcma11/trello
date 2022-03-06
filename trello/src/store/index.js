@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './user/index'
 import board from './board/index'
 import list from './list/index'
+import card from './card/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +13,7 @@ export default new Vuex.Store({
   modules: {
     user,
     board,
-    list
+    list,
+    card
   }
 })

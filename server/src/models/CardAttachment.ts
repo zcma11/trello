@@ -9,7 +9,8 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-  Default
+  Default,
+  BelongsTo
 } from 'sequelize-typescript'
 import { Attachment } from './Attachment'
 import { BoardListCard } from './BoardListCard'
@@ -51,6 +52,9 @@ export class CardAttachment extends Model {
     type: DataType.BOOLEAN
   })
   isCover: boolean
+
+  @BelongsTo(() => Attachment)
+  detail: Attachment
 
   @CreatedAt
   createdAt: Date

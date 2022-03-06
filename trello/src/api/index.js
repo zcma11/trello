@@ -92,3 +92,26 @@ export const updateList = async ([listId, data]) => {
     data
   })
 }
+
+export const getCards = async boardListId => {
+  return await axios({
+    url: `/card`,
+    params: {
+      boardListId
+    }
+  })
+}
+
+export const getCard = async cardId => {
+  return await axios({
+    url: `/card${cardId}`
+  })
+}
+
+export const addCard = async data => {
+  return await axios({
+    url: '/card',
+    method: 'post',
+    data
+  })
+}

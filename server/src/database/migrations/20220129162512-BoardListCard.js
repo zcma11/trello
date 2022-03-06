@@ -26,11 +26,13 @@ module.exports = {
         },
         description: {
           type: Sequelize.STRING(2000),
-          allowNull: false
+          allowNull: false,
+          defaultValue: ''
         },
         order: {
           type: Sequelize.FLOAT,
-          allowNull: false
+          allowNull: false,
+          defaultValue: 0
         },
         createdAt: {
           type: Sequelize.DATE,

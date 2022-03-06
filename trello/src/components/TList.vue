@@ -1,5 +1,5 @@
 <template>
-  <div class="list-wrap" :class="{ 'list-adding': false }">
+  <div class="list-wrap" :class="{ 'list-adding': isAddingCard }">
     <div class="list-placeholder" ref="placeholder"></div>
 
     <div class="list" ref="list">
@@ -17,157 +17,12 @@
       </div>
 
       <div class="list-cards">
-        <div class="list-card">
-          <div
-            class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
-          ></div>
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div
-            class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
-          ></div>
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div
-            class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
-          ></div>
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div
-            class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
-          ></div>
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div
-            class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
-          ></div>
-          <div class="list-card-title">接口代码编写及测试</div>
-          <div class="list-card-badges">
-            <div class="badge">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-comment"></span>
-              <span class="text">2</span>
-            </div>
-            <div class="badge">
-              <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
-            </div>
-          </div>
-        </div>
+        <t-card v-for="card in cards" :key="card.id" :card="card" />
 
         <div class="list-card-add-form">
           <textarea
+            v-model="cardName"
+            ref="cardNameInput"
             class="form-field-input"
             placeholder="为这张卡片添加标题……"
           ></textarea>
@@ -175,13 +30,13 @@
       </div>
 
       <div class="list-footer">
-        <div class="list-card-add">
+        <div class="list-card-add" @click="wantToAddCard">
           <span class="icon icon-add"></span>
           <span>添加另一张卡片</span>
         </div>
         <div class="list-add-confirm">
-          <button class="btn btn-success">添加卡片</button>
-          <span class="icon icon-close"></span>
+          <button class="btn btn-success" @click="addCard">添加卡片</button>
+          <span class="icon icon-close" @click="cancelAddCard"></span>
         </div>
       </div>
     </div>
@@ -189,14 +44,21 @@
 </template>
 
 <script>
+import TCard from '@/components/TCard'
 export default {
   name: 'TList',
+  components: {
+    TCard
+  },
   props: {
     list: Object,
     index: Number
   },
-  created() {
+  async created() {
     this.name = this.list.name
+    if (this.cards.length === 0) {
+      await this.$store.dispatch('card/getAllCards', this.list.id)
+    }
   },
   mounted() {
     const listHeader = this.$refs.listHeader
@@ -207,6 +69,7 @@ export default {
   data() {
     return {
       name: '',
+      cardName: '',
       drag: {
         isDrag: false,
         isDown: false,
@@ -214,7 +77,13 @@ export default {
         downClientY: 0,
         downElementX: 0,
         downElementY: 0
-      }
+      },
+      isAddingCard: false
+    }
+  },
+  computed: {
+    cards() {
+      return this.$store.getters['card/getCards'](this.list.id)
     }
   },
   methods: {
@@ -291,6 +160,29 @@ export default {
           name
         }
       ])
+    },
+    wantToAddCard() {
+      this.isAddingCard = true
+      this.$nextTick(() => {
+        this.$refs.cardNameInput.focus()
+      })
+    },
+    cancelAddCard() {
+      this.cardName = ''
+      this.isAddingCard = false
+    },
+    async addCard() {
+      const name = this.cardName
+      if (!name.trim()) {
+        return this.$refs.cardNameInput.focus()
+      }
+
+      await this.$store.dispatch('card/postCard', {
+        name,
+        boardListId: this.list.id
+      })
+
+      this.cancelAddCard()
     }
   }
 }
