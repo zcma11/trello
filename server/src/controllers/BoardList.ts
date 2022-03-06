@@ -29,11 +29,17 @@ export default class BoardList {
     const { boardId, name } = body
     await getAndVerifyBoard(boardId, ctx.userInfo.id)
 
+    const maxOrderList = await BoardListModel.findOne({
+      where: {
+        boardId
+      },
+      order: [['order', 'desc']]
+    })
     const boardList = new BoardListModel()
     boardList.name = name
     boardList.userId = ctx.userInfo.id
     boardList.boardId = boardId
-    boardList.order = 65535
+    boardList.order = maxOrderList ? maxOrderList.order + 65535 : 65535
     await boardList.save()
 
     ctx.status = 201
@@ -54,7 +60,7 @@ export default class BoardList {
 
     const boardList = await BoardListModel.findAll({
       where,
-      order: [['id', 'asc']]
+      order: [['order', 'asc']]
     })
 
     return boardList

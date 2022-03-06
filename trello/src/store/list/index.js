@@ -1,4 +1,4 @@
-import { getLists, addList } from '@/api'
+import { getLists, addList, updateList } from '@/api'
 
 export default {
   namespaced: true,
@@ -12,6 +12,14 @@ export default {
   mutations: {
     updateLists: (state, data) => {
       state.lists = [...state.lists, ...data]
+    },
+    updateList: (state, data) => {
+      state.lists = state.lists.map(list => {
+        if (list.id === data.id) {
+          return { ...list, ...data }
+        }
+        return list
+      })
     }
   },
   actions: {
@@ -29,6 +37,14 @@ export default {
         const res = await addList(data)
 
         commit('updateLists', [res.data])
+      } catch (e) {
+        throw e
+      }
+    },
+    putList: async ({ commit }, data) => {
+      try {
+        const res = await updateList(data)
+        commit('updateList', res.data)
       } catch (e) {
         throw e
       }

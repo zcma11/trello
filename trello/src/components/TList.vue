@@ -9,6 +9,7 @@
           ref="listNameInput"
           v-model="name"
           @mousedown.prevent
+          @blur="updateName"
         ></textarea>
         <div class="extras-menu" @mousedown.prevent>
           <span class="icon icon-more"></span>
@@ -191,7 +192,8 @@
 export default {
   name: 'TList',
   props: {
-    list: Object
+    list: Object,
+    index: Number
   },
   created() {
     this.name = this.list.name
@@ -223,7 +225,6 @@ export default {
       drag.downClientY = e.clientY
 
       const pos = this.$refs.list.getBoundingClientRect()
-      console.log(pos)
       drag.downElementX = pos.x
       drag.downElementY = pos.y
     },
@@ -232,7 +233,6 @@ export default {
       if (drag.isDown) {
         const offsetX = e.clientX - drag.downClientX
         const offsetY = e.clientY - drag.downClientY
-        console.log(offsetX, offsetY)
         const ele = this.$refs.list
 
         if (!drag.isDrag) {
@@ -260,7 +260,6 @@ export default {
     },
     dragUp(e) {
       const { drag } = this
-      console.log(drag.isDrag, drag.isDown)
       if (drag.isDown) {
         if (drag.isDrag) {
           // 移动
@@ -273,7 +272,9 @@ export default {
           ele.style.transform = 'rotate(0deg)'
           this.$el.appendChild(ele)
           this.$emit('dragEnd', {
-            component: this
+            list: this.list,
+            el: this.$el,
+            originIndex: this.index
           })
         } else {
           // 没有拖拽
@@ -281,6 +282,15 @@ export default {
         }
         drag.isDown = drag.isDrag = false
       }
+    },
+    async updateName() {
+      const name = this.name
+      await this.$store.dispatch('list/putList', [
+        this.list.id,
+        {
+          name
+        }
+      ])
     }
   }
 }

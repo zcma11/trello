@@ -62,7 +62,6 @@ export default {
       }
 
       try {
-        console.log('123', this.$store.dispatch)
         await this.$store.dispatch('user/login', {
           name: this.username,
           password: this.password

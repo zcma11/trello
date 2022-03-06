@@ -84,3 +84,11 @@ export const addList = async data => {
     data
   })
 }
+
+export const updateList = async ([listId, data]) => {
+  return await axios({
+    url: `/list/${listId}`,
+    method: 'put',
+    data
+  })
+}

@@ -14,10 +14,12 @@
         <t-list
           @dragStart="dragStart"
           @dragMove="dragMove"
-          @drapEnd="drapEnd"
-          v-for="list in lists"
+          @dragEnd="dragEnd"
+          v-for="(list, index) in lists"
           :key="list.id"
+          :index="index"
           :list="list"
+          :data-order="list.order"
         />
 
         <!--无内容列表容器-->
@@ -135,7 +137,36 @@ export default {
         }
       })
     },
-    dragEnd() {}
+    dragEnd({ list: currentList, el: currentListEl, originIndex }) {
+      const listsEls = [
+        ...currentListEl.parentNode.querySelectorAll('.list-wrap')
+      ]
+      const currentIndex = listsEls.findIndex(list => list === currentListEl)
+
+      const prevOrder =
+        listsEls[currentIndex - 1] &&
+        parseFloat(listsEls[currentIndex - 1].dataset.order)
+      const nextOrder =
+        listsEls[currentIndex + 1] &&
+        parseFloat(listsEls[currentIndex + 1].dataset.order)
+      let order
+      if (currentIndex !== originIndex) {
+        if (currentIndex === 0) {
+          order = nextOrder / 2
+        } else if (currentIndex === listsEls.length - 2) {
+          order = prevOrder + 65535
+        } else {
+          order = prevOrder + (nextOrder - prevOrder) / 2
+        }
+      }
+
+      this.$store.dispatch('list/putList', [
+        currentList.id,
+        {
+          order
+        }
+      ])
+    }
   }
 }
 </script>
